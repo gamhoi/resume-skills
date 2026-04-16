@@ -1,42 +1,45 @@
-# Resume Generator
+# Resume Agent Skills Collection
 
-A local, AI-powered toolkit that translates unstructured base resumes into beautifully formatted, ATS-compliant PDFs and Word Documents (`.docx`). Designed specifically to be run locally, this generator ensures that your resume is styled cleanly, prioritizes metrics, and passes automated tracking screenings without resorting to keyword stuffing.
+Welcome to the **Resume Skills** repository! This is a collection of AI-powered workflows, prompt architectures, and local tooling designed to turn advanced LLMs (like Claude, Gemini, or ChatGPT via Cursor) into specialized career and resume assistants.
 
-## Features
+This repository uses the **Agent Skills** design pattern. By exposing specific `.md` files to your AI agent, you can override its generic behavior and grant it deep, specialized capabilities for distinct career-oriented tasks.
 
-1. **Standard Generation:** Converts any base resume into a formal, two-page (or scaled) academic format using standard Serif fonts natively read by ATS systems.
-2. **Improvement Mode:** Uses a strict set of "Professional Content Improvement Rules" to ensure bullet points prioritize Action Verbs, numerical metrics ("Show, Don't Tell"), standardized dates, and explicit HTML bolding (`<b>`) for hard capabilities.
-3. **JD Tailoring Mode:** An ethical, advanced translation layer that reads a target Job Description (JD) and rephrases your historical experience to match demanded "Explicit Good Keywords." It employs a strict **Translation, Not Fabrication** philosophy to prevent hallucinated skills.
-4. **Multi-Format Output:** Natively maps identical formatting parameters to both PDF (`reportlab`) and Word (`python-docx`).
+## 🚀 Available Skills
 
-## Prerequisites
+Currently, the repository hosts the following skill kits. Expect more to be added in the future!
 
-You need Python 3 installed on your system.
+### 1. Resume Generator (`skills/resume-generator`)
+A local toolkit that translates unstructured base resumes into beautifully formatted, ATS-compliant PDFs and Word Documents (`.docx`). 
+* **Standard Generation:** Converts raw resumes into a formal, ATS-readable two-page format.
+* **Improvement Mode:** Uses a strict set of "Professional Content Improvement Rules" to emphasize action verbs, numerical metrics, and HTML bolding (`<b>`) for hard capabilities.
+* **JD Tailoring Mode:** An ethical, advanced translation layer that intelligently matches your historical experience to a target Job Description (JD) using a strict *Translation, Not Fabrication* philosophy.
 
-Install all dependencies required for generation:
+## 💻 Prerequisites
+
+Many skills contain deterministic Python execution engines to construct formatted documents locally. Ensure you have Python installed, then install the global dependencies:
 
 ```bash
-pip3 install -r requirements.txt
+pip3 install -r skills/resume-generator/requirements.txt
 ```
 
-## Supported Agents & Frameworks
+## 🤖 Supported Agents & Frameworks
 
-This skill relies on providing `SKILL.md` as context to an advanced LLM agent. Here is how to load it into popular agenting environments:
+This entire repository is built to be ingested by advanced LLM agents. Here is how to load the skills into popular agent environments:
 
 ### Google Antigravity
-Antigravity automatically discovers skills situated in your workspace. Simply ensure the `resume-generator` folder is in your active workspace directory and you can directly prompt:
+Antigravity automatically discovers skills situated in your workspace. Simply ensure this repository is in your active workspace directory and you can directly prompt:
 > *"Use the Resume Generator skill to tailor my resume for this JD."*
 
 ### Cursor IDE
-Cursor needs a context pointer to adapt the rules. Open Cursor and either:
-1. Copy the contents of `skills/resume-generator/SKILL.md` into your `.cursorrules` file at the root of your workspace.
+Cursor needs a context pointer to adapt the rules. Open Cursor in this repository and either:
+1. Copy the contents of your chosen skill (e.g., `skills/resume-generator/SKILL.md`) into your `.cursorrules` file.
 2. Alternatively, just reference the file directly in the Chat interface: `@skills/resume-generator/SKILL.md generate a new resume from my text`.
 
 ### Claude Code (`claude`) / GitHub Copilot Agents
-If you are running CLI agents like Claude Code or Copilot, start your session in the root workspace where the `skills/` folder lives. Inform the agent of its capabilities upfront:
+If you are running CLI agents like Claude Code or Copilot, start your session in the root workspace. Inform the agent of the capability you want to unlock upfront:
 > *"Load the logic defined in `skills/resume-generator/SKILL.md`. I want to use the Improvement mode on my base resume."*
 
-## Repository Structure
+## 📁 Repository Structure
 
 ```text
 .
@@ -45,12 +48,11 @@ If you are running CLI agents like Claude Code or Copilot, start your session in
 ├── AGENTS.md                             # Global instructions for autonomous AI agents
 ├── CLAUDE.md                             # Context rules automatically ingested by Claude Code
 └── skills/
-    └── resume-generator/
-        ├── SKILL.md                      # The core LLM prompt constraint library
-        ├── requirements.txt              # Python dependencies
-        └── scripts/
-            ├── generate_resume.py        # PDF compilation script
-            └── generate_resume_docx.py   # DOCX compilation script
+    ├── resume-generator/                 # [Skill] Unstructured Text -> ATS PDF/DOCX
+    │   ├── SKILL.md                      # Core prompt constraints & JSON Schema
+    │   ├── requirements.txt              
+    │   └── scripts/                      # Local python execution engines
+    └── [Future Skills...]                # E.g., Cover Letter Generator, Interview Prep
 ```
 
 ## License
