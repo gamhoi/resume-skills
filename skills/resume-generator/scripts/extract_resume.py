@@ -43,6 +43,7 @@ SECTION_NAMES = {
     "SUMMARY",
     "WORK EXPERIENCE",
     "EXPERIENCE",
+    "OTHER PROFESSIONAL EXPERIENCE",
     "PROJECTS",
     "EDUCATION",
     "CERTIFICATIONS",
@@ -537,6 +538,8 @@ def extract_resume_to_json(pdf_path):
             resume["summary"] = parse_summary(sec_lines)
         elif name in ("WORK EXPERIENCE", "EXPERIENCE"):
             resume["experience"] = parse_experience(sec_lines)
+        elif name == "OTHER PROFESSIONAL EXPERIENCE":
+            resume["other_experience"] = parse_experience(sec_lines)
         elif name == "PROJECTS":
             resume["projects"] = parse_projects(sec_lines)
         elif name == "EDUCATION":

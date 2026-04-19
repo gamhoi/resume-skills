@@ -133,7 +133,41 @@ def generate_pdf(json_path, output_path):
                 story.append(Paragraph(f"&bull; {bullet}", bullet_style))
             story.append(Spacer(1, 6))
 
-    # 3.5. Projects
+    # 3.5. Other Professional Experience (optional)
+    if data.get('other_experience'):
+        story.append(Paragraph("OTHER PROFESSIONAL EXPERIENCE", heading_style))
+        add_hr()
+        for job in data['other_experience']:
+            title = job.get('title', '')
+            company = job.get('company', '')
+            dates = job.get('dates', '')
+            location = job.get('location', '')
+            
+            line1_left = f"<b>{title}</b>"
+            line1_right = dates
+            
+            line2_left = f"<i>{company}</i>" + (f" - {location}" if location else "")
+            
+            t_data = [
+                [Paragraph(line1_left, body_style), Paragraph(line1_right, ParagraphStyle('R', parent=body_style, alignment=TA_RIGHT))],
+                [Paragraph(line2_left, body_style), ""]
+            ]
+            t = Table(t_data, colWidths=['70%', '30%'])
+            t.setStyle(TableStyle([
+                ('VALIGN', (0,0), (-1,-1), 'TOP'),
+                ('LEFTPADDING', (0,0), (-1,-1), 0),
+                ('RIGHTPADDING', (0,0), (-1,-1), 0),
+                ('BOTTOMPADDING', (0,0), (-1,-1), 0),
+                ('TOPPADDING', (0,0), (-1,-1), 0),
+            ]))
+            story.append(t)
+            story.append(Spacer(1, 4))
+            
+            for bullet in job.get('bullets', []):
+                story.append(Paragraph(f"&bull; {bullet}", bullet_style))
+            story.append(Spacer(1, 6))
+
+    # 3.6. Projects (optional)
     if data.get('projects'):
         story.append(Paragraph("PROJECTS", heading_style))
         add_hr()

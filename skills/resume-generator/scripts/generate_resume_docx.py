@@ -137,7 +137,32 @@ def generate_docx(json_data, output_path):
                 p_bullet = document.add_paragraph(style='List Bullet')
                 parse_html_bold(p_bullet, bullet)
 
-    # 4. Projects
+    # 4. Other Professional Experience (optional)
+    if json_data.get('other_experience'):
+        add_section_header('OTHER PROFESSIONAL EXPERIENCE')
+        for exp in json_data['other_experience']:
+            p1 = document.add_paragraph()
+            run_title = p1.add_run(exp.get('title', ''))
+            set_font(run_title, 11, bold=True)
+            
+            # Dates
+            if exp.get('dates'):
+                p1.add_run(f" \t {exp.get('dates')}")
+            
+            # Line 2: Company - Location
+            p2 = document.add_paragraph()
+            company = exp.get('company', '')
+            loc = exp.get('location', '')
+            line2 = f"{company} - {loc}" if loc else company
+            run_company = p2.add_run(line2)
+            set_font(run_company, 11, bold=False)
+            
+            # Bullets
+            for bullet in exp.get('bullets', []):
+                p_bullet = document.add_paragraph(style='List Bullet')
+                parse_html_bold(p_bullet, bullet)
+
+    # 4.5. Projects (optional)
     if json_data.get('projects'):
         add_section_header('PROJECTS')
         for proj in json_data['projects']:

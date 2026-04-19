@@ -55,7 +55,7 @@ pip3 install reportlab python-docx
      - Ensure any overlapping "nice-to-have" technical skills from the JD are heavily emphasized — but only if the user's original resume demonstrates legitimate experience with them.
 
 4. **JSON Schema**:
-   - Map the extracted (and optionally improved) info into the precise JSON schema below. DO NOT change the keys; strictly adhere to this schema. Add a `projects` array if necessary.
+   - Map the extracted (and optionally improved) info into the precise JSON schema below. DO NOT change the keys; strictly adhere to this schema. Add `other_experience` and/or `projects` arrays if necessary.
    - The `summary` field MUST be an **array of strings** (bullet points), not a single string.
      ```json
      {
@@ -77,6 +77,15 @@ pip3 install reportlab python-docx
            "dates": "Jan 2020 - Present",
            "location": "Remote",
            "bullets": ["Developed scalable...", "Led a project..."]
+         }
+       ],
+       "other_experience": [
+         {
+           "title": "Office Administrative Assistant",
+           "company": "Company Name",
+           "dates": "Feb 2025 - Present",
+           "location": "City, State",
+           "bullets": ["Provided administrative support..."]
          }
        ],
        "projects": [
