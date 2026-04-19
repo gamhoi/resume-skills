@@ -10,8 +10,7 @@ Currently, the repository hosts the following skill kits. Expect more to be adde
 
 ### 1. Resume Generator (`skills/resume-generator`)
 A local toolkit that translates unstructured base resumes into beautifully formatted, ATS-compliant PDFs and Word Documents (`.docx`). 
-* **Standard Generation:** Converts raw resumes into a formal, ATS-readable two-page format.
-* **Improvement Mode:** Uses a strict set of "Professional Content Improvement Rules" to emphasize action verbs, numerical metrics, and HTML bolding (`<b>`) for hard capabilities.
+* **Improvement Mode:** The default mode for processing resumes. Uses a strict set of "Professional Content Improvement Rules" to automatically optimize content, emphasize action verbs, refine numerical metrics, and use HTML bolding (`<b>`) for hard capabilities.
 * **JD Tailoring Mode:** An ethical, advanced translation layer that intelligently matches your historical experience to a target Job Description (JD) using a strict *Translation, Not Fabrication* philosophy.
 
 ## 💻 Prerequisites
