@@ -12,7 +12,7 @@ Use this skill whenever a user asks to "generate a new resume", "build me a resu
 
 **Output Format:** Output is always **PDF** by default. If the user explicitly requests Word format, you can output a **.docx**.
 
-> **Note:** JD Tailoring Mode is a *superset* of Improvement Mode. When tailoring, ALL formatting rules from the Professional Content Optimization step (Keyword Bolding, Action Verbs, Metrics, etc.) are automatically applied in addition to the JD-specific translation logic.
+> **Note:** JD Tailoring Mode is a *superset* of Improvement Mode. When tailoring, ALL formatting rules from Professional Content Optimization are automatically applied. The tailoring workflow is broken into sub-steps 3a-3e, with detailed strategies in `jd-tailoring-guide.md`.
 
 ## Prerequisites
 
@@ -40,19 +40,43 @@ pip3 install reportlab python-docx
      - **Abbreviations:** Avoid internal/lazy abbreviations (like etc., A/P, A/R). Always spell out industry terms precisely, followed by their acronym if matching typical job descriptions (e.g., Applicant Tracking System (ATS)).
 
 3. **JD Tailoring Mode (If requested)**:
-   - If the user provides a target Job Description (JD) and asks to "tailor" their resume, you will execute a highly advanced translation phase. **Note: All formatting/metric rules from the Professional Content Optimization step (Keyword Bolding, Action Verbs, Metrics) MUST still be applied during Tailoring!**
-   - Intelligently parse the JD with a strict focus on extracting **Explicit "Good" Keywords** (defined as hard technical skills, domain-specific programming languages, frameworks, specialized tools, and precise industry terminology like "event-driven architecture" or "SIP/RTP").
-   - **Ignore "Dumb" Keywords**: Do NOT blindly stuff generic nouns, basic soft skills, or universal corporate verbs (e.g., "team", "customer", "meetings", "troubleshooting", "participating") just to satisfy low-level keyword matchers. Maintain the high-impact "Show, Don't Tell" metric methodology.
-   - **CORE PRINCIPLE — "Translation, Not Fabrication":**
-     - Tailoring means **rephrasing existing experience** using the target JD's keywords to describe the same or similar work. It does **NOT** mean inventing skills or technologies the user never used.
-     - **Allowed:** If the user's resume says "C++11", you may write "C++14/17" because these are closely related versions of the same language. If the user worked on "real-time media servers", you may rephrase that as "mission-critical communications software" if the JD uses that term.
-     - **Forbidden:** If the user has no JavaScript experience anywhere in their resume, you MUST NOT add "JavaScript" just because the JD lists it. That is lying. Only match JD keywords that genuinely map to the user's actual experience.
-     - **Rule of thumb:** Every technical keyword in the tailored output must be traceable back to something the user actually did in their original resume.
-   - **Targeted Rewriting:**
-     - Rewrite the `summary` to explicitly declare the targeted JD title and mirror the core technical mission of the opening, using only skills the user genuinely possesses.
-     - Swap generic technical terms in the user's base resume for the exact phrasing/jargon used in the JD, when the underlying skill is the same or closely related.
-     - Prune (delete) irrelevant technologies or bullet points to reduce noise, bringing the user's **legitimately matching** skills to the forefront of the bullet points and `SKILLS` section.
-     - Ensure any overlapping "nice-to-have" technical skills from the JD are heavily emphasized — but only if the user's original resume demonstrates legitimate experience with them.
+   - Triggered when the user provides a target Job Description (JD) and asks to "tailor" their resume. This is a *superset* of Improvement Mode — all Professional Content Optimization rules (Keyword Bolding, Action Verbs, Metrics, etc.) are automatically applied in addition to the tailoring logic below.
+   - See `jd-tailoring-guide.md` for detailed frameworks, scoring models, and examples.
+   - **CORE PRINCIPLE — "Translation, Not Fabrication":** Tailoring means **rephrasing existing experience** using the JD's keywords. It does NOT mean inventing skills the user never used. Every technical keyword in the tailored output must be traceable to the user's actual experience.
+
+   **Step 3a — Parse the JD (Structured Analysis):**
+   - Analyze the JD and extract 5 categories (see `jd-tailoring-guide.md` Section 1):
+     1. **Explicit Requirements** — must-haves vs. nice-to-haves
+     2. **Technical & ATS Keywords (with Frequency)** — categorized (languages, frameworks, tools, domains, workflows, soft skills). Track the frequency of each keyword in the JD. High-frequency keywords are most important. **Scan both the Requirements and Responsibilities sections.** Extract ALL keywords, including workflow descriptions (e.g. "object detection", "algorithm optimization"), soft skills (e.g. "Friendly"), and exact noun phrases, for verbatim ATS matching.
+     3. **Implicit Preferences** — cultural signals, hidden requirements read between the lines
+     4. **Role Archetype** — IC technical / people leadership / cross-functional (guides bullet emphasis)
+     5. **Terminology Map** — JD phrasing ↔ common synonyms the user's resume might use
+
+   **Step 3b — Match & Score:**
+   - For each JD requirement, find the user's best matching experience and classify into confidence bands (see `jd-tailoring-guide.md` Section 2):
+     - **DIRECT** (90-100%): Exact match → use with confidence, bold the keyword
+     - **TRANSFERABLE** (75-89%): Same capability, different context → reframe using Terminology Map
+     - **ADJACENT** (60-74%): Related experience → apply reframing strategy
+     - **WEAK** (45-59%): Stretch match → flag, use only if no better option
+     - **GAP** (<45%): No match → proceed to Gap Discovery
+
+   **Step 3c — Gap Discovery (Ask the User):**
+   - For each GAP or WEAK match (both must-haves and nice-to-haves), ask the user if they have undocumented experience (see `jd-tailoring-guide.md` Section 3).
+   - Try to discover and improve the matching degree as much as possible for all missing keywords. If the user provides new info, integrate it into the JSON and re-score. Do not fabricate or force keywords if there is no true experience. If not, accept the gap and proceed.
+
+   **Step 3d — Reframe & Optimize:**
+   - For TRANSFERABLE and ADJACENT matches, apply one of 4 named reframing strategies (see `jd-tailoring-guide.md` Section 4): Keyword Alignment, Emphasis Shift, Abstraction Level, or Scale Emphasis.
+   - Rewrite the `summary` to declare the targeted JD title and mirror the core technical mission, using only skills the user genuinely possesses.
+   - Prune irrelevant bullets and technologies to reduce noise, bringing legitimately matching skills to the forefront.
+   - Apply all Professional Content Optimization rules (bolding, action verbs, metrics).
+
+   **Step 3e — Tailoring Report:**
+   - Before generating the PDF, present a Tailoring Report to the user for review (see `jd-tailoring-guide.md` Section 5). The report must include:
+     - JD coverage summary (direct / transferable / adjacent / gaps)
+     - Reframings applied (before → after, with strategy name)
+     - Unmatched requirements with recommendations
+     - Interview prep tips (talking points, expected gap questions)
+   - Wait for user confirmation before proceeding to PDF generation.
 
 4. **JSON Schema**:
    - Map the extracted (and optionally improved) info into the precise JSON schema below. DO NOT change the keys; strictly adhere to this schema. Add `other_experience` and/or `projects` arrays if necessary.

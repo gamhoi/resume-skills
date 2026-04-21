@@ -11,7 +11,7 @@ Currently, the repository hosts the following skill kits. Expect more to be adde
 ### 1. Resume Generator (`skills/resume-generator`)
 A local toolkit that translates unstructured base resumes into beautifully formatted, ATS-compliant PDFs and Word Documents (`.docx`). 
 * **Improvement Mode:** The default mode for processing resumes. Uses a strict set of "Professional Content Improvement Rules" to automatically optimize content, emphasize action verbs, refine numerical metrics, and use HTML bolding (`<b>`) for hard capabilities.
-* **JD Tailoring Mode:** An ethical, advanced translation layer that intelligently matches your historical experience to a target Job Description (JD) using a strict *Translation, Not Fabrication* philosophy.
+* **JD Tailoring Mode:** An advanced, structured tailoring pipeline that parses JDs into 5 categories, scores your experience against requirements using confidence bands, discovers undocumented skills through targeted questions, and applies named reframing strategies — all governed by a strict *Translation, Not Fabrication* philosophy. See `jd-tailoring-guide.md` for full framework.
 
 ## 💻 Prerequisites
 
@@ -49,6 +49,7 @@ If you are running CLI agents like Claude Code or Copilot, start your session in
 └── skills/
     ├── resume-generator/                 # [Skill] Unstructured Text -> ATS PDF/DOCX
     │   ├── SKILL.md                      # Core prompt constraints & JSON Schema
+    │   ├── jd-tailoring-guide.md          # Detailed JD Tailoring strategies & frameworks
     │   ├── requirements.txt              
     │   └── scripts/                      # Local python execution engines
     └── [Future Skills...]                # E.g., Cover Letter Generator, Interview Prep
